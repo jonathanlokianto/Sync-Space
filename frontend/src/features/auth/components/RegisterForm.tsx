@@ -30,7 +30,16 @@ export function RegisterForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    let processedValue = value;
+
+    if (name === "username") {
+      processedValue = value.replace(/[^a-zA-Z0-9_]/g, "");
+    } else if (name === "fullname") {
+      processedValue = value.replace(/[^a-zA-Z\s]/g, "");
+    } else if (name === "email") {
+      processedValue = value.replace(/[^a-zA-Z0-9@._-]/g, "");
+    }
+    setFormData((prev) => ({ ...prev, [name]: processedValue }));
   };
 
   return (

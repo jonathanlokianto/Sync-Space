@@ -2,12 +2,17 @@
 
 import { ROUTES } from "@/constants/routes";
 import { useCreateRoom } from "@/features/rooms/hooks/useRooms";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export function HomePage() {
-  const [roomSlug, setRoomId] = useState("");
+  const queryClient = useQueryClient();
+  // const [roomSlug, setRoomId] = useState("");
+  const [formData, setFormData] = useState({
+    slug: "",
+  });
   const router = useRouter();
   const {
     mutate: doCreateRoom,
@@ -16,22 +21,32 @@ export function HomePage() {
   } = useCreateRoom();
 
   const activeError = errorCreateRoom;
+  const activePending = isCreatingRoom;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleJoinRoom = (e: React.SubmitEvent) => {
     e.preventDefault();
-    if (!roomSlug.trim()) return;
-    router.push(`/${roomSlug.trim()}`);
+    const identity = formData.slug.trim();
+    if (!identity) return;
+
+    router.push(ROUTES.ROOM_DETAIL(identity));
   };
 
   const handleCreateRandomRoom = () => {
     // const randomSlug = Math.random().toString(36).substring(2, 8);
     doCreateRoom(undefined, {
       onSuccess: (response) => {
-        const roomSlug = response.slug;
-        router.push(`/rooms/${roomSlug}`);
+        const identity = response.slug;
+        queryClient.setQueryData(["room", identity], response);
+        router.push(ROUTES.ROOM_DETAIL(identity));
+        // router.push(`/rooms/${roomSlug}`);
       },
       onError: (error) => {
-        console.error("Failed to generate a room for you. Error: " + { error });
+        console.error("Failed to generate a room for you. Error: ", error);
       },
     });
   };
@@ -46,13 +61,14 @@ export function HomePage() {
       <form onSubmit={handleJoinRoom} className="space-y-3">
         <input
           type="text"
-          value={roomSlug}
-          onChange={(e) => setRoomId(e.target.value)}
+          name="slug"
+          value={formData.slug}
+          onChange={handleChange}
           placeholder="Enter ID Path"
           className="w-full text-black px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
         />
 
-        {activeError   && (
+        {activeError && (
           <p className="text-red-500 text-sm font-medium">
             Failed to open a room for you.
           </p>
@@ -60,6 +76,7 @@ export function HomePage() {
 
         <button
           type="submit"
+          disabled={activePending}
           className="w-full bg-blue-600 text-white font-medium py-2.5 rounded-lg text-sm hover:bg-blue-700 transition-colors"
         >
           Open Room
@@ -77,7 +94,7 @@ export function HomePage() {
 
       <button
         onClick={handleCreateRandomRoom}
-        disabled={isCreatingRoom}
+        disabled={activePending}
         className="w-full bg-gray-100 text-gray-700 font-medium py-2.5 rounded-lg text-sm hover:bg-gray-200 transition-colors"
       >
         Create Random Room

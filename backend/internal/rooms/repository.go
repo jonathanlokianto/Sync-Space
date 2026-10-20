@@ -7,12 +7,13 @@ import (
 )
 
 type Repository interface {
-	CreateRoom(ctx context.Context, room *Room, userID *uint) error
+	CreateRoom(ctx context.Context, room *Room) error
 	UpdateRoom(ctx context.Context, room *Room, roomID uint64) error
 	DeleteRoom(ctx context.Context, roomID uint64) error
-	FindRoomByID(roomID uint) (*Room, error)
+	FindRoomByID(ctx context.Context, roomID uint) (*Room, error)
 	FindRoomByName(ctx context.Context, roomName string) ([]Room, error)
 	FindRoomBySlug(ctx context.Context, roomSlug string) (*Room, error)
+	FindRoomsByUser(ctx context.Context, userID uint) ([]Room, error)
 	// FindRoomByNameOrSlug(ctx context.Context, identity string) (*Room, error)
 }
 
@@ -24,11 +25,7 @@ func NewRepository (db *gorm.DB) Repository {
 	return &repository{db:db}
 }
 
-func (r *repository) CreateRoom(ctx context.Context, room *Room, userID *uint) error {
-	if userID != nil {
-		room.UserID = userID
-	}
-
+func (r *repository) CreateRoom(ctx context.Context, room *Room) error {
 	if err := r.db.WithContext(ctx).Create(room).Error ; err != nil {
 		return err
 	}
@@ -56,13 +53,24 @@ func (r *repository) DeleteRoom(ctx context.Context, roomID uint64) error {
 }
 
 
-func (r *repository) FindRoomByID(roomID uint) (*Room, error) {
+func (r *repository) FindRoomByID(ctx context.Context, roomID uint) (*Room, error) {
 	var room Room
-	if err := r.db.Where("id = ?", roomID).First(&room).Error ; err != nil {
+	if err := r.db.WithContext(ctx).Where("id = ?", roomID).First(&room).Error ; err != nil {
 		return nil, err
 	}
 
 	return &room, nil
+}
+
+func (r *repository) FindRoomsByUser(ctx context.Context, userID uint) ([]Room, error) {
+	var rooms []Room
+	err := r.db.WithContext(ctx).Preload("User").Where("user_id = ?", userID).Find(&rooms).Error 
+	
+	if err != nil {
+		return nil, err
+	}
+
+	return rooms, nil
 }
 
 func (r *repository) FindRoomByName(ctx context.Context, roomName string) ([]Room, error) {
@@ -79,7 +87,7 @@ func (r *repository) FindRoomByName(ctx context.Context, roomName string) ([]Roo
 
 func (r *repository) FindRoomBySlug(ctx context.Context, roomSlug string) (*Room, error) {
 	var room Room
-	if err := r.db.WithContext(ctx).Where("slug = ?", roomSlug).First(&room).Error ; err != nil {
+	if err := r.db.WithContext(ctx).Preload("User").Where("slug = ?", roomSlug).First(&room).Error ; err != nil {
 		return nil, err
 	}
 

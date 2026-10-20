@@ -1,4 +1,4 @@
-export interface User {
+export interface Profile {
   id: number;
   fullname: string;
   email: string;
@@ -8,7 +8,7 @@ export interface User {
   is_premium?: boolean;
 }
 
-export interface UpdateUserRequest {
+export interface UpdateProfileRequest {
     fullname?: string;
     email?: string;
     username?: string;

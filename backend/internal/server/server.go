@@ -44,7 +44,7 @@ func NewServer(db *gorm.DB) *Server {
 	userService := users.NewService(userRepo)
 	userHandler := users.NewHandler(userService)
 	
-	roomService := rooms.NewService(roomRepo)
+	roomService := rooms.NewService(roomRepo, userService)
 	roomHandler := rooms.NewHandler(roomService)
 	
 	server := &Server{

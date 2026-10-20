@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
 type Handler struct {
 	service Service
 }
@@ -26,7 +27,7 @@ func (h *Handler) CreateRoom(c *gin.Context){
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "User ID format is invalid"})
 			return
 		}
-		userIDPtr = &userID
+		userIDPtr = &userID 
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -74,10 +75,10 @@ func (h *Handler) UpdateExistingRoom(c *gin.Context) {
 func (h *Handler) GetRoomBySlug (c *gin.Context) {
 	ctx := c.Request.Context();
 
-	identity := c.Query("identity")
+	identity := c.Param("slug")
 
 	if identity == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Identity parameter is required."})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Room Identity parameter is required."})
 		return
 	}
 	
@@ -93,7 +94,7 @@ func (h *Handler) GetRoomBySlug (c *gin.Context) {
 func (h *Handler) GetRoomByName (c *gin.Context) {
 	ctx := c.Request.Context();
 
-	identity := c.Query("identity")
+	identity := c.Query("name")
 
 	if identity == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Identity parameter is required."})
@@ -107,6 +108,36 @@ func (h *Handler) GetRoomByName (c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": responses})
+}
+
+func (h *Handler) GetRoomsByUser(c *gin.Context) {
+	
+	ctx:= c.Request.Context()
+	userIDVal, exists := c.Get("user_id")
+    if !exists {
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized: User ID not found in session"})
+        return
+    }
+	var userID uint
+    switch v := userIDVal.(type) {
+    case float64:
+        userID = uint(v)
+    case int:
+        userID = uint(v)
+    case uint:
+        userID = v
+    default:
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user ID type"})
+        return
+    }
+	
+	responses, err := h.service.FindRoomsByUser(ctx, userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Room Found", "data": responses})
 }
 
 
@@ -126,3 +157,18 @@ func (h *Handler) DeleteCurrentRoom(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Room deleted successfully."})
 }
+
+
+// func (h *Handler) UpdateRoomBySlug(c *gin.Context) {
+// 	var req UpdateRoomRequest
+// 	ctx := c.Request.Context()
+// 	roomSlug := c.Params("slug")
+
+// 	if err := h.service.UpdateRoomBySlug(ctx, req) ; err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		return
+// 	}
+
+// 	c.JSON(http.StatusOK, gin.H{"message": "Room deleted successfully."})
+
+// }

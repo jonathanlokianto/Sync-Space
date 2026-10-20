@@ -17,3 +17,8 @@ type Response struct {
 	Email    string `json:"email"`
 	Username string `json:"username"`
 }
+
+type GetRoomCreatorResponse struct {
+	ID       uint   `json:"id"`
+	Username string `json:"username"`
+}

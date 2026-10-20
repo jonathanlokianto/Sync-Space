@@ -51,8 +51,23 @@ func (h *Handler) Login (c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{
+	// c.SetCookie(
+	// 	"access_token",
+	// 	result.AccessToken,
+	// 	86400 * 1,
+	// 	"/",
+	// 	"",
+	// 	false,
+	// 	true,
+	// )
+
+	c.JSON(http.StatusOK, gin.H{
 		"message":"User logged in successfully",
 		"data": result,
 	})
 }
+
+// func (h *Handler) PasswordReset(c *gin.Context) {
+// 	ctx := c.Request.Context()
+
+// }

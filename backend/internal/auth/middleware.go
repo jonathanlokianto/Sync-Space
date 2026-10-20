@@ -9,6 +9,7 @@ import (
 
 type MiddlewareManager interface {
 	AuthMiddleware() gin.HandlerFunc
+	OptionalAuthMiddleware() gin.HandlerFunc
 	RequireRole(expectedRole string) gin.HandlerFunc
 }
 
@@ -21,13 +22,33 @@ func NewMiddlewareManager(tokenService TokenService) MiddlewareManager {
 }
 
 
+func (m *middlewareManager) OptionalAuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
+			c.Next()
+			return
+		}
+
+		tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
+		
+		claims, err := m.tokenService.ValidateJWT(tokenString)
+		if err == nil {
+		c.Set("user_id", claims.UserID)
+		c.Set("role", claims.Role)
+		c.Set("is_premium", claims.IsPremium)
+		}
+		c.Next()
+	}
+}
+
+
 func (m *middlewareManager) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token Not Found"})
 			c.Abort()
-			c.Next()
 			return
 		}
 

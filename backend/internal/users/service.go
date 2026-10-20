@@ -7,7 +7,9 @@ import (
 
 type Service interface {
 	GetProfile(ctx context.Context, req GetUserIDRequest) (*Response, error)
-	UpdateProfile(ctx context.Context, req Request, userID uint) (*Response, error) 
+	UpdateProfile(ctx context.Context, req Request, userID uint) (*Response, error)
+
+	GetUserData(ctx context.Context, userID uint) (*User, error)
 }
 
 type service struct {
@@ -16,6 +18,14 @@ type service struct {
 
 func NewService(repository Repository) Service {
 	return &service{repository: repository}
+}
+
+func (s *service) GetUserData(ctx context.Context, userID uint) (*User, error) {
+	user, err := s.repository.GetUser(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
 func (s *service) GetProfile(ctx context.Context, req GetUserIDRequest) (*Response, error) {

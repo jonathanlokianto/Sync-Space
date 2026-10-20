@@ -7,8 +7,12 @@ import { ROUTES } from "@/constants/routes";
 import { useLogin } from "../hooks/useAuth";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { useNotification } from "@/context/notification/context/NotificationContext";
+import { session } from "@/lib/session";
 
 export function LoginForm() {
+  const { showNotification } = useNotification();
+
   const [formData, setFormData] = useState({
     identity: "",
     password: "",
@@ -19,9 +23,23 @@ export function LoginForm() {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     doLogin(formData, {
-      onSuccess: () => {
-        alert("User logged in successfully!");
+      onSuccess: (response) => {
+        // alert("User logged in successfully!");
+        const token = response.access_token;
+        session.setToken(token);
+        showNotification({
+          title: "Login Success",
+          message: "You being redirected to the dashboard. Please wait.",
+          variant: "success",
+        });
         router.push(ROUTES.DASHBOARD);
+      },
+      onError: (error) => {
+        showNotification({
+          title: "Error",
+          message: String(error),
+          variant: "error",
+        });
       },
     });
   };
@@ -67,14 +85,14 @@ export function LoginForm() {
         </Button>
       </form>
 
-      <div className="transition-colors flex justify-end mb-2 ">
+      {/* <div className="transition-colors flex justify-end mb-2 ">
         <Link
           className="transition-colors text-gray-600 hover:text-gray-400"
           href={ROUTES.FORGOT_PASSWORD}
         >
           Forgot Password?
         </Link>
-      </div>
+      </div> */}
 
       <div className="flex items-center my-4">
         <div className="flex-1 border-t border-gray-400" />

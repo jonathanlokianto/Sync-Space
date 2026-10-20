@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { NotificationProvider } from "@/context/notification/context/NotificationContext";
+import { NotificationContainer } from "@/context/notification/components/NotificationContainer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,9 +30,12 @@ export default function RootLayout({
     >
       <body className="h-full w-full min-h-screen min-w-screen flex flex-col font-sans">
         <Providers>
-          <main className="bg-gray-100 flex flex-1 flex-col p-6">
-            {children}
-          </main>
+          <NotificationProvider>
+            <main className="bg-gray-100 flex flex-1 flex-col p-6 items-center justify-center">
+              {children}
+            </main>
+            <NotificationContainer />
+          </NotificationProvider>
         </Providers>
       </body>
     </html>

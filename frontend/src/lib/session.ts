@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-const TOKEN_KEY = "auth_token";
+const TOKEN_KEY = "access_token";
 export const session = {
   getToken: (): string | undefined => Cookies.get(TOKEN_KEY),
   setToken: (token: string, expiresDays = 7): void => {

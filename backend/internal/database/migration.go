@@ -3,9 +3,15 @@ package database
 import (
 	"sync-space-backend/internal/rooms"
 	"sync-space-backend/internal/users"
+	// "time"
 
 	"gorm.io/gorm"
 )
+
+// type User struct {
+// 	ResetToken *string `json:"reset_token"`
+// 	ResetTokenExpired *time.Time `json:"reset_token_expired"`
+// }
 
 func RunMigration(db *gorm.DB) error {
 	return db.AutoMigrate(&users.User{}, rooms.Room{})

@@ -1,5 +1,7 @@
 package rooms
 
+import "sync-space-backend/internal/users"
+
 func ToRoomResponse(room *Room) RoomResponse {
 	// var roomID uint64
 	// if id, ok := room.ID.(uint64); ok {
@@ -7,16 +9,24 @@ func ToRoomResponse(room *Room) RoomResponse {
 	// } else {
 	// 	roomID = uint64(room.ID)
 	// }
-	return RoomResponse{
+	response := RoomResponse{
 		ID:      room.ID,
 		Name:    room.Name,
 		Slug:    room.Slug,
 		Content: room.Content,
 	}
+
+	if room.UserID != nil {
+		response.User = &users.GetRoomCreatorResponse{
+			ID: *room.UserID,
+			Username: room.User.Username,
+		}
+	}
+	return response
 }
 
 func ToRoomListResponse(rooms []Room) []RoomResponse {
-	var responses []RoomResponse
+	responses:= []RoomResponse{}
 	for _, room := range rooms {
 		responses = append(responses, ToRoomResponse(&room))
 	}
