@@ -1,0 +1,20 @@
+[debug] [2026-10-21T02:45:51.395Z] ----------------------------------------------------------------------
+[debug] [2026-10-21T02:45:51.398Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\jonat\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2026-10-21T02:45:51.398Z] CLI Version:   15.34.0
+[debug] [2026-10-21T02:45:51.399Z] Platform:      win32
+[debug] [2026-10-21T02:45:51.399Z] Node Version:  v24.11.1
+[debug] [2026-10-21T02:45:51.399Z] Detected Agent: unknown
+[debug] [2026-10-21T02:45:51.399Z] Time:          Wed Oct 21 2026 09:45:51 GMT+0700 (Western Indonesia Time)
+[debug] [2026-10-21T02:45:51.399Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\jonat\Documents\Projects\Sync Space\frontend
+

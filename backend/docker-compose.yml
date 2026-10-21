@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: sync_space_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: sync_space_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    build: .
+    container_name: sync_space_backend
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    restart: always
+
+volumes:
+  pgdata:

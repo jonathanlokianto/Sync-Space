@@ -1,7 +1,6 @@
 "use client";
 
 import { ROUTES } from "@/constants/routes";
-import { RoomCreatorProps } from "@/types";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -10,8 +9,8 @@ interface ContentHeaderProps {
   roomName: string;
   user?: {
     id: number;
-    fullname: string;
-    email: string;
+    fullname?: string;
+    email?: string;
     username: string;
   } | null;
 }

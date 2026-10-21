@@ -16,7 +16,7 @@ export default function RoomListSection() {
   } = useQuery<Room[]>({
     queryKey: ["dashboard", "rooms"],
     queryFn: () => roomAPI.fetchRoomByUser(),
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 10,
   });
 
   if (isLoading) {
