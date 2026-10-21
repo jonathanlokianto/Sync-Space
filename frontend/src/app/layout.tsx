@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { NotificationProvider } from "@/context/notification/context/NotificationContext";
 import { NotificationContainer } from "@/context/notification/components/NotificationContainer";
+import { Footer } from "@/components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
             <NotificationContainer />
           </NotificationProvider>
         </Providers>
+        <Footer />
       </body>
     </html>
   );

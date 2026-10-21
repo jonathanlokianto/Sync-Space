@@ -54,9 +54,15 @@ export function HomePage() {
   return (
     <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
       <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Sync Space</h1>
-      <p className="text-sm text-gray-500 mb-6">
+      <p className="text-sm text-gray-500 mb-2">
         Instantly share notes and files between devices via a unique ID Path.
       </p>
+      <Link
+        href={ROUTES.ABOUT} // Sesuaikan dengan route About Anda
+        className="inline-block text-xs text-blue-600 hover:text-blue-700 font-medium hover:underline mb-6 transition-colors"
+      >
+        What is Sync Space?
+      </Link>
 
       <form onSubmit={handleJoinRoom} className="space-y-3">
         <input
@@ -97,7 +103,7 @@ export function HomePage() {
         disabled={activePending}
         className="w-full bg-gray-100 text-gray-700 font-medium py-2.5 rounded-lg text-sm hover:bg-gray-200 transition-colors"
       >
-        Create Random Room
+        Create New Room
       </button>
 
       <div className="grid grid-cols-[1fr_auto_1fr] items-center w-full my-6">
