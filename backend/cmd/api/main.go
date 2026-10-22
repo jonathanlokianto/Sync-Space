@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	log.Println("Main dijalankan")
 	err := godotenv.Load("../../.env")
 	if err != nil {
         log.Println("Warning: .env file not found, relying on system environment variables")
@@ -39,6 +40,7 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
+	
 	
 	srv := server.NewServer(db)
 	if err := srv.Start(port) ; err != nil {

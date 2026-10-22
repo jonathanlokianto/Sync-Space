@@ -29,6 +29,7 @@ type Server struct {
 }
 
 func NewServer(db *gorm.DB) *Server {
+	log.Println("Main memanggil server")
 	router := gin.Default()
 	router.Use(middleware.CORSMiddleware())
 
