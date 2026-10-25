@@ -29,7 +29,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="h-full w-full min-h-screen min-w-screen flex flex-col font-sans">
+      <body className="h-full w-full flex flex-col font-sans">
         <Providers>
           <NotificationProvider>
             <main className="bg-gray-100 flex flex-1 flex-col p-6 items-center justify-center">

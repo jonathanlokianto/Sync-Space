@@ -53,7 +53,7 @@ export function HomePage() {
 
   return (
     <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
-      <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Sync Space</h1>
+      <h1 className="text-3xl font-extrabold text-gray-900 mb-6">Sync Space</h1>
       <p className="text-sm text-gray-500 mb-2">
         Instantly share notes and files between devices via a unique ID Path.
       </p>

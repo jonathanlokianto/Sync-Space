@@ -33,7 +33,7 @@ function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
 export function Footer() {
   return (
     <footer className="bg-white w-full border-t border-gray-200 py-6 mt-auto">
-      <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+      <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-gray-800 text-sm">
             Sync Space

@@ -11,10 +11,27 @@ import (
 
 func main() {
 	log.Println("Main dijalankan")
-	err := godotenv.Load("../../.env")
-	if err != nil {
-        log.Println("Warning: .env file not found, relying on system environment variables")
-    }
+
+	// Coba beberapa jalur sekaligus agar tidak pernah gagal menemukannya
+	envPaths := []string{
+		".env.production",
+		"../.env.production",
+		"../../.env.production",
+		"/home/ludious/Documents/Sync-Space/backend/.env.production",
+	}
+
+	var envLoaded bool
+	for _, path := range envPaths {
+		if err := godotenv.Load(path); err == nil {
+			log.Printf("Berhasil memuat env dari: %s", path)
+			envLoaded = true
+			break
+		}
+	}
+
+	if !envLoaded {
+		log.Println("Warning: .env.production file not found di semua jalur, mengandalkan environment system")
+	}
 	cfg := database.Config{
 		Host: os.Getenv("DB_HOST"),
 		Port: os.Getenv("DB_PORT"),
