@@ -16,7 +16,8 @@ export default async function LandingPage() {
     redirect(ROUTES.DASHBOARD);
   }
   return (
-    <div className="w-full max-w-5xl flex flex-col lg:flex-row items-center justify-between overflow-x-hidden">
+    <div className="w-full max-w-5xl flex flex-col lg:flex-row items-center justify-between overflow-x-hidden 
+              sm:px-6 sm:py-6 sm:gap-10">
       <div className="w-full lg:w-auto flex justify-center">
         <HomePage />
       </div>

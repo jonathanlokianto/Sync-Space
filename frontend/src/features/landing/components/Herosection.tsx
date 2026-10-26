@@ -4,9 +4,10 @@ export function HeroSection() {
   return (
     <div className="flex flex-col justify-center space-y-5 text-left w-full max-w-lg min-w-0 lg:pr-4">
       <div className="space-y-2">
-        <h1 className="lg:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight wrap-break-words">
+        {/* Tambahkan text-2xl dan sm:text-3xl agar proporsional di HP */}
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight wrap-break-words">
           Write and share your notes with anyone.
-          <span className="bg-black inline-block w-0.5 h-12 animate-[pulse_0.7s_infinite] ml-1 align-top duration-75"></span>
+          <span className="bg-black inline-block w-0.5 h-8 sm:h-10 lg:h-12 animate-[pulse_0.7s_infinite] ml-1 align-top duration-75"></span>
         </h1>
         <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
           Sync Space allows you to open rooms without hassle. No complex setup
