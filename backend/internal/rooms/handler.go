@@ -1,10 +1,12 @@
 package rooms
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 
@@ -84,6 +86,10 @@ func (h *Handler) GetRoomBySlug (c *gin.Context) {
 	
 	response, err := h.service.FindRoomBySlug(ctx, identity)
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Room not found."})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

@@ -69,7 +69,13 @@ export const roomAPI = {
   async fetchRoomBySlug(slug: string): Promise<Room> {
     if (USE_MOCK) {
       const room = MOCK_ROOMS.find((r) => r.slug === slug);
-      if (!room) return MOCK_ROOMS[0]; // fallback aman
+      if (!room) {
+        const error = new Error("Room does not exist") as Error & {
+          status: number;
+        };
+        error.status = 404;
+        throw error;
+      }
       return room;
     }
 
