@@ -31,19 +31,19 @@ func (s *Server) RegisterRoutes() {
 		publicRooms.Use(s.Middleware.OptionalAuthMiddleware())
 		{
 			publicRooms.POST("", s.RoomHandler.CreateRoom)
-			publicRooms.GET("/:slug", s.RoomHandler.GetRoomBySlug)
-			publicRooms.DELETE("/:id", s.RoomHandler.DeleteCurrentRoom)
-			publicRooms.PUT("/id/:id", s.RoomHandler.UpdateExistingRoom)
+			publicRooms.GET("/slug/:slug", s.RoomHandler.GetRoomBySlug)
+			publicRooms.PUT("/:id", s.RoomHandler.UpdateExistingRoom)
+			// publicRooms.DELETE("/:id", s.RoomHandler.DeleteCurrentRoom)
 			// publicRooms.PUT("/:slug", s.RoomHandler.UpdateRoomBySlug)
 		}
 
 		roomsGroup := v1.Group("/rooms")
 		roomsGroup.Use(s.Middleware.AuthMiddleware())
 		{
-			// roomsGroup.POST("/", s.RoomHandler.CreateRoom)
 			roomsGroup.GET("", s.RoomHandler.GetRoomsByUser)
-			roomsGroup.GET("/room-name/:name", s.RoomHandler.GetRoomByName)
-			roomsGroup.DELETE("/room-id/:id", s.RoomHandler.DeleteCurrentRoom)
+			roomsGroup.GET("/name/:name", s.RoomHandler.GetRoomByName)
+			roomsGroup.DELETE("/:id", s.RoomHandler.DeleteCurrentRoom)
+			// roomsGroup.POST("/", s.RoomHandler.CreateRoom)
 			// roomsGroup.GET("/:id", s.RoomHandler.RoomByID)
 		}
 
@@ -51,8 +51,9 @@ func (s *Server) RegisterRoutes() {
 		dashboardGroup := v1.Group("/dashboard")
 		dashboardGroup.Use(s.Middleware.AuthMiddleware())
 		{
-			dashboardGroup.GET("/user-id/:id", s.RoomHandler.GetRoomsByUser)
-			dashboardGroup.DELETE("/room-id/:id", s.RoomHandler.DeleteCurrentRoom)
+			dashboardGroup.GET("/:id", s.RoomHandler.GetRoomsByUser)
+			// dashboardGroup.PUT("/:id", s.RoomHandler.UpdateExistingRoom)
+			// dashboardGroup.DELETE("/:id", s.RoomHandler.DeleteCurrentRoom)
 		}
 	}
 }
