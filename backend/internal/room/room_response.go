@@ -1,6 +1,6 @@
-package rooms
+package room
 
-import "sync-space-backend/internal/users"
+import "sync-space-backend/internal/user"
 
 func ToRoomResponse(room *Room) RoomResponse {
 	// var roomID uint64
@@ -17,7 +17,7 @@ func ToRoomResponse(room *Room) RoomResponse {
 	}
 
 	if room.UserID != nil {
-		response.User = &users.GetRoomCreatorResponse{
+		response.User = &user.GetRoomCreatorResponse{
 			ID: *room.UserID,
 			Username: room.User.Username,
 		}

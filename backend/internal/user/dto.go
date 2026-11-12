@@ -1,4 +1,4 @@
-package users
+package user
 
 type GetUserIDRequest struct {
 	ID uint `json:"user_id"`

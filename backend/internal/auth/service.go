@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 	"errors"
-	"sync-space-backend/internal/users"
+	"sync-space-backend/internal/user"
 	"sync-space-backend/pkg/security"
 )
 
@@ -13,11 +13,11 @@ type Service interface {
 }
 
 type service struct {
-	repository users.Repository
+	repository user.Repository
 	tokenService TokenService
 }
 
-func NewService(repository users.Repository, tokenService TokenService) Service {
+func NewService(repository user.Repository, tokenService TokenService) Service {
 	return &service{
 		repository: repository,
 		tokenService: tokenService,
@@ -35,7 +35,7 @@ func (s *service) RegisterUser(ctx context.Context, req RegisterRequest) error {
 		return err
 	}
 
-	userEntity := users.User{
+	userEntity := user.User{
 		Fullname:     req.Fullname,
 		Email:        req.Email,
 		Username:     req.Username,

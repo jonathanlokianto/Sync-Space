@@ -1,9 +1,9 @@
-package rooms
+package room
 
 import (
 	"context"
 	"errors"
-	"sync-space-backend/internal/users"
+	"sync-space-backend/internal/user"
 	"sync-space-backend/pkg/generator"
 
 	"gorm.io/gorm"
@@ -17,15 +17,15 @@ type Service interface {
 	FindRoomsByUser(ctx context.Context, userID uint) (*[]RoomResponse, error)
 	FindRoomBySlug(ctx context.Context, roomIdentity string) (*RoomResponse, error)
 
-	getUserByID(ctx context.Context, userID uint) (*users.User, error)
+	getUserByID(ctx context.Context, userID uint) (*user.User, error)
 }
 
 type service struct {
 	roomRepo Repository
-	userService users.Service
+	userService user.Service
 }
 
-func NewService(roomRepo Repository, userService users.Service) Service {
+func NewService(roomRepo Repository, userService user.Service) Service {
 	return &service{roomRepo: roomRepo, userService: userService}
 }
 
@@ -49,7 +49,7 @@ func (s *service) generateUniqueRandomSlug(ctx context.Context) (string, error) 
 	return "", errors.New("Failed to generate unique slug. Please try again!")
 }
 
-func (s *service) getUserByID(ctx context.Context, userID uint) (*users.User, error){
+func (s *service) getUserByID(ctx context.Context, userID uint) (*user.User, error){
 	// var user users.User
 
 	user, err := s.userService.GetUserData(ctx, userID) 

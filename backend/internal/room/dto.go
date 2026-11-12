@@ -1,6 +1,6 @@
-package rooms
+package room
 
-import "sync-space-backend/internal/users"
+import "sync-space-backend/internal/user"
 
 type CreateRoomRequest struct {
 	Name string `json:"name" binding:"omitempty"`
@@ -24,5 +24,5 @@ type RoomResponse struct {
 	Name    string  `json:"name"`
 	Slug    string  `json:"slug"`
 	Content *string `json:"content,omitempty"`
-	User    *users.GetRoomCreatorResponse `json:"user,omitempty"`
+	User    *user.GetRoomCreatorResponse `json:"user,omitempty"`
 }

@@ -10,8 +10,8 @@ import (
 	"os/signal"
 	"sync-space-backend/internal/auth"
 	"sync-space-backend/internal/middleware"
-	"sync-space-backend/internal/rooms"
-	"sync-space-backend/internal/users"
+	"sync-space-backend/internal/room"
+	"sync-space-backend/internal/user"
 	"syscall"
 	"time"
 
@@ -23,8 +23,8 @@ type Server struct {
 	Router *gin.Engine
 	DB  *gorm.DB
 	AuthHandler *auth.Handler
-	UserHandler *users.Handler
-	RoomHandler *rooms.Handler
+	UserHandler *user.Handler
+	RoomHandler *room.Handler
 	Middleware  auth.MiddlewareManager
 }
 
@@ -36,17 +36,17 @@ func NewServer(db *gorm.DB) *Server {
 	tokenService := auth.NewJWTService()
 	mw := auth.NewMiddlewareManager(tokenService)
 
-	roomRepo := rooms.NewRepository(db)
-	userRepo := users.NewRepository(db)
+	roomRepo := room.NewRepository(db)
+	userRepo := user.NewRepository(db)
 
 	authService := auth.NewService(userRepo, tokenService)
 	authHandler := auth.NewHandler(authService)
 
-	userService := users.NewService(userRepo)
-	userHandler := users.NewHandler(userService)
+	userService := user.NewService(userRepo)
+	userHandler := user.NewHandler(userService)
 	
-	roomService := rooms.NewService(roomRepo, userService)
-	roomHandler := rooms.NewHandler(roomService)
+	roomService := room.NewService(roomRepo, userService)
+	roomHandler := room.NewHandler(roomService)
 	
 	server := &Server{
 		Router:      router,

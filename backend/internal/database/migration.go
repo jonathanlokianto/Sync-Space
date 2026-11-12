@@ -1,8 +1,9 @@
 package database
 
 import (
-	"sync-space-backend/internal/rooms"
-	"sync-space-backend/internal/users"
+	"sync-space-backend/internal/room"
+	"sync-space-backend/internal/user"
+
 	// "time"
 
 	"gorm.io/gorm"
@@ -14,7 +15,7 @@ import (
 // }
 
 func RunMigration(db *gorm.DB) error {
-	return db.AutoMigrate(&users.User{}, rooms.Room{})
+	return db.AutoMigrate(&user.User{}, room.Room{})
 }
 
 // func RunMigration(db *gorm.DB) error {
